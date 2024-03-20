@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- Generate current time -->
+    <property name="now" value="now()" dbms="postgresql"/>
+
+    <!-- Generate v4 uuid-->
+    <property name="uuid_generator" value="uuid_generate_v4()" dbms="postgresql"/>
+
+    <changeSet id="2024-03-18-001" author="Denis.Gitonga">
+        <createTable tableName="users" schemaName="tasks">
+            <column name="id" type="uuid" defaultValue="${uuid_generator}">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="username" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="first_name" type="varchar(50)"/>
+            <column name="last_name" type="varchar(50)"/>
+        </createTable>
+
+        <createTable tableName="roles" schemaName="tasks">
+            <column name="id" type="uuid" defaultValue="${uuid_generator}">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="role" type="varchar(20)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="user_roles" schemaName="tasks">
+            <column name="usr_id" type="uuid">
+                <constraints nullable="false"
+                             referencedTableName="users"
+                             referencedTableSchemaName="tasks"
+                             referencedColumnNames="id"
+                             foreignKeyName="fk_user_roles_usr_id"
+                             validateForeignKey="true"/>
+            </column>
+            <column name="rol_id" type="uuid">
+                <constraints nullable="false"
+                             referencedTableName="roles"
+                             referencedTableSchemaName="tasks"
+                             referencedColumnNames="id"
+                             foreignKeyName="fk_user_roles_rol_id"
+                             validateForeignKey="true"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="user_roles" schemaName="tasks" columnNames="usr_id, rol_id"/>
+    </changeSet>
+
+    <changeSet id="2024-03-18-002" author="Denis.Gitonga">
+        <loadData
+                file="db/data/default_user.csv"
+                tableName="users"
+                schemaName="tasks"
+                relativeToChangelogFile="false">
+        </loadData>
+
+        <loadData
+                file="db/data/default_role.csv"
+                tableName="roles"
+                schemaName="tasks"
+                relativeToChangelogFile="false">
+        </loadData>
+
+        <sql dbms="postgresql">
+            insert into tasks.user_roles(usr_id, rol_id)
+            values ((select id from tasks.users where username = 'DBetta'),
+                    (select id from tasks.roles where role = 'ADMIN'));
+        </sql>
+    </changeSet>
+</databaseChangeLog>

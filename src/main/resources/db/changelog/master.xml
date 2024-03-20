@@ -12,4 +12,5 @@
     </changeSet>
 
     <include file="tasks.xml" relativeToChangelogFile="true" id="2024-03-18-001" />
+    <include file="users.xml" relativeToChangelogFile="true" id="2024-03-18-002" />
 </databaseChangeLog>

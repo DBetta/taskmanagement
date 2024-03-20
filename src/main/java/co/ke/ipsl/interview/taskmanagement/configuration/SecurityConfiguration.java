@@ -39,15 +39,13 @@ public class SecurityConfiguration {
                 .csrf(CsrfSpec::disable)
                 .formLogin(FormLoginSpec::disable)
                 .httpBasic(withDefaults())
-//                .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()))
                 .build();
     }
 
     @Bean
-    public ReactiveUserDetailsService userDetailsService() {
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("user")
+    public ReactiveUserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+        UserDetails user = User.withUsername("user")
+                .password(passwordEncoder.encode("user"))
                 .roles("USER")
                 .build();
         return new MapReactiveUserDetailsService(user);
