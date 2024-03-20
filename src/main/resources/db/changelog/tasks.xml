@@ -17,7 +17,7 @@
             </column>
 
             <column name="title" type="varchar(100)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="description" type="text"/>
             <column name="due_date" type="datetime"/>

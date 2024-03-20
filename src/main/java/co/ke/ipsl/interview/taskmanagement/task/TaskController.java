@@ -1,9 +1,16 @@
 package co.ke.ipsl.interview.taskmanagement.task;
 
 import co.ke.ipsl.interview.taskmanagement.task.dto.CreateTaskDto;
+import co.ke.ipsl.interview.taskmanagement.task.dto.FilterTaskDto;
 import co.ke.ipsl.interview.taskmanagement.task.dto.TaskDto;
 import co.ke.ipsl.interview.taskmanagement.task.dto.UpdateTaskDto;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -21,6 +28,8 @@ import static org.springframework.http.ResponseEntity.created;
 @RequestMapping("/tasks")
 public class TaskController {
 
+    private final Logger log = LoggerFactory.getLogger(TaskController.class);
+
     private final TaskService taskService;
 
     public TaskController(TaskService taskService) {
@@ -29,8 +38,12 @@ public class TaskController {
 
 
     @GetMapping
-    Flux<TaskDto> fetchAllTasks() {
-        return taskService.fetchAllTasks();
+    Mono<Page<TaskDto>> fetchTasks(
+            FilterTaskDto filterTaskDto,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        log.debug("Filtering: {}", filterTaskDto);
+        return taskService.fetchTasks(filterTaskDto, pageable);
     }
 
     @PostMapping
