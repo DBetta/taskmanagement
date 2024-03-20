@@ -10,7 +10,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 /**
@@ -26,7 +26,7 @@ public record Task(
         String description,
 
         @Column(value = "due_date")
-        LocalDateTime dueDate,
+        LocalDate dueDate,
 
         @CreatedDate
         @Column(value = "created_date")

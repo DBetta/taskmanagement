@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * @author Denis Gitonga
@@ -22,6 +22,6 @@ public record UpdateTaskDto(
         String description,
 
         @Future(message = "Due date should be a day in the future")
-        LocalDateTime dueDate
+        LocalDate dueDate
 ) {
 }

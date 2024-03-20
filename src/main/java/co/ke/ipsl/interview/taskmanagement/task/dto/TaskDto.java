@@ -2,7 +2,7 @@ package co.ke.ipsl.interview.taskmanagement.task.dto;
 
 import co.ke.ipsl.interview.taskmanagement.task.model.Task;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 /**
@@ -15,7 +15,7 @@ public record TaskDto(
 
         String description,
 
-        LocalDateTime dueDate
+        LocalDate dueDate
 ) {
 
     public static TaskDto of(Task task) {

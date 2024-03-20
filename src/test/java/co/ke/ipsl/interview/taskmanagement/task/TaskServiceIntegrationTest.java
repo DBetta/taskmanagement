@@ -28,6 +28,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import reactor.test.StepVerifier;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
@@ -101,7 +102,7 @@ class TaskServiceIntegrationTest {
         final var createTaskDto = new CreateTaskDto(
                 faker.text().text(5, 100),
                 faker.text().text(1000),
-                faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                LocalDate.now().plusDays(2)
         );
 
         webTestClient.post()
@@ -140,7 +141,7 @@ class TaskServiceIntegrationTest {
         final var createTaskDto = new CreateTaskDto(
                 faker.text().text(5, 100),
                 faker.text().text(1000),
-                faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                LocalDate.now().plusDays(2)
         );
 
         webTestClient.post()
@@ -165,7 +166,7 @@ class TaskServiceIntegrationTest {
         final var createTaskDto = new CreateTaskDto(
                 faker.text().text(5, 100),
                 faker.text().text(1000),
-                faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                LocalDate.now().plusDays(2)
         );
 
         Task existingTask = taskRepository.save(Task.of(createTaskDto)).block();
@@ -173,7 +174,7 @@ class TaskServiceIntegrationTest {
         final var updateTaskDto = new UpdateTaskDto(
                 faker.text().text(5, 100),
                 faker.text().text(1000),
-                faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                LocalDate.now().plusDays(3)
         );
 
         assertThat(existingTask).isNotNull()
@@ -224,7 +225,7 @@ class TaskServiceIntegrationTest {
         final var createTaskDto = new CreateTaskDto(
                 faker.text().text(5, 100),
                 faker.text().text(1000),
-                faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                LocalDate.now().plusDays(2)
         );
 
         Task existingTask = taskRepository.save(Task.of(createTaskDto)).block();
@@ -232,7 +233,7 @@ class TaskServiceIntegrationTest {
         final var updateTaskDto = new UpdateTaskDto(
                 faker.text().text(5, 100),
                 faker.text().text(1000),
-                faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                LocalDate.now().plusDays(2)
         );
 
         assertThat(existingTask).isNotNull()
@@ -258,7 +259,7 @@ class TaskServiceIntegrationTest {
                 .mapToObj(value -> new CreateTaskDto(
                         faker.text().text(5, 100),
                         faker.text().text(1000),
-                        faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                        LocalDate.now().plusDays(2)
                 ))
                 .map(Task::of)
                 .toList();
@@ -287,7 +288,7 @@ class TaskServiceIntegrationTest {
                 .mapToObj(value -> new CreateTaskDto(
                         faker.text().text(5, 100),
                         faker.text().text(1000),
-                        faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                        LocalDate.now().plusDays(2)
                 ))
                 .map(Task::of)
                 .toList();
@@ -320,18 +321,16 @@ class TaskServiceIntegrationTest {
     void fetchAllTasks_filterByDueDate() {
 
         final var faker = new Faker();
+        final var dueDate =
+                LocalDate.now().plusDays(2);
         final var tasks = IntStream.range(0, 5)
                 .mapToObj(value -> new CreateTaskDto(
                         faker.text().text(5, 100),
                         faker.text().text(1000),
-                        faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                        dueDate
                 ))
                 .map(Task::of)
                 .toList();
-
-        final var dueDate = tasks.stream().findFirst()
-                .map(Task::dueDate)
-                .orElse(LocalDateTime.now());
 
         taskRepository.saveAll(tasks).collectList()
                 .as(StepVerifier::create)
@@ -346,7 +345,7 @@ class TaskServiceIntegrationTest {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("$.totalElements").isEqualTo(1);
+                .jsonPath("$.totalElements").isEqualTo(5);
     }
 
     @Test
@@ -357,7 +356,7 @@ class TaskServiceIntegrationTest {
         final var createTaskDto = new CreateTaskDto(
                 faker.text().text(5, 100),
                 faker.text().text(1000),
-                faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                LocalDate.now().plusDays(2)
         );
 
         Task existingTask = taskRepository.save(Task.of(createTaskDto)).block();
@@ -388,7 +387,7 @@ class TaskServiceIntegrationTest {
         final var createTaskDto = new CreateTaskDto(
                 faker.text().text(5, 100),
                 faker.text().text(1000),
-                faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                LocalDate.now().plusDays(2)
         );
 
         Task existingTask = taskRepository.save(Task.of(createTaskDto)).block();

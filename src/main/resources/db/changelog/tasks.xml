@@ -20,7 +20,7 @@
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="description" type="text"/>
-            <column name="due_date" type="datetime"/>
+            <column name="due_date" type="date"/>
 
             <column name="created_date" type="datetime" defaultValue="${now}"/>
             <column name="created_by_id" type="uuid"/>

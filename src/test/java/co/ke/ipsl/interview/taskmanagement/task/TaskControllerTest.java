@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -48,7 +49,7 @@ class TaskControllerTest {
         final var createTaskDto = new CreateTaskDto(
                 faker.text().text(5, 100),
                 faker.text().text(1000),
-                faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                LocalDate.now().plusDays(2)
         );
 
         given(taskService.createTask(createTaskDto)).willAnswer(invocation -> {
@@ -101,7 +102,7 @@ class TaskControllerTest {
                 .bodyValue(new CreateTaskDto(
                         faker.text().text(4),
                         faker.text().text(1000),
-                        faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                        LocalDate.now().plusDays(2)
                 ))
                 .exchange()
                 .expectStatus()
@@ -114,7 +115,7 @@ class TaskControllerTest {
                 .bodyValue(new CreateTaskDto(
                         faker.text().text(101),
                         faker.text().text(1000),
-                        faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                        LocalDate.now().plusDays(2)
                 ))
                 .exchange()
                 .expectStatus()
@@ -132,7 +133,7 @@ class TaskControllerTest {
                 .bodyValue(new CreateTaskDto(
                         faker.text().text(5),
                         faker.text().text(1000),
-                        faker.date().past(1, TimeUnit.DAYS).toLocalDateTime()
+                        faker.date().past(1, TimeUnit.DAYS).toLocalDateTime().toLocalDate()
                 ))
                 .exchange()
                 .expectStatus()

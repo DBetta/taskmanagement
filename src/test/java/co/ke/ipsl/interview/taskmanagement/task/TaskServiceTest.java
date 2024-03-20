@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.LocalDate;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -54,7 +55,7 @@ class TaskServiceTest {
         var createTaskDto = new CreateTaskDto(
                 faker.text().text(5, 100),
                 faker.text().text(1000),
-                faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                LocalDate.now().plusDays(2)
         );
         taskService.createTask(createTaskDto)
                 .as(StepVerifier::create)
@@ -93,7 +94,7 @@ class TaskServiceTest {
         final var createTaskDto = new CreateTaskDto(
                 faker.text().text(5, 100),
                 faker.text().text(1000),
-                faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                LocalDate.now().plusDays(2)
         );
         final var task = Task.of(createTaskDto).withId(taskId);
         given(taskRepository.findById(taskId)).willReturn(Mono.just(task));
@@ -105,7 +106,7 @@ class TaskServiceTest {
         final var updateTaskDto = new UpdateTaskDto(
                 faker.text().text(5, 100),
                 faker.text().text(1000),
-                faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                LocalDate.now().plusDays(3)
         );
 
         taskService.updateTask(taskId, updateTaskDto)
@@ -140,7 +141,7 @@ class TaskServiceTest {
         final var updateTaskDto = new UpdateTaskDto(
                 faker.text().text(5, 100),
                 faker.text().text(1000),
-                faker.date().future(2, TimeUnit.DAYS).toLocalDateTime()
+                LocalDate.now().plusDays(2)
         );
 
         given(taskRepository.findById(taskId)).willReturn(Mono.empty());

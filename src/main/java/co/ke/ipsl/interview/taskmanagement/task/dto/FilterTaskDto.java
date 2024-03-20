@@ -4,7 +4,7 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.relational.core.query.Criteria;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import static org.springframework.data.relational.core.query.Criteria.from;
 
@@ -16,7 +16,7 @@ public record FilterTaskDto(
         String title,
 
         @Nullable
-        LocalDateTime dueDate
+        LocalDate dueDate
 ) {
     @NotNull
     public Criteria criteria() {
