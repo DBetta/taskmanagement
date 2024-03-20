@@ -1,5 +1,6 @@
 package co.ke.ipsl.interview.taskmanagement.task;
 
+import co.ke.ipsl.interview.taskmanagement.configuration.SecurityConfiguration;
 import co.ke.ipsl.interview.taskmanagement.task.dto.CreateTaskDto;
 import co.ke.ipsl.interview.taskmanagement.task.dto.TaskDto;
 import co.ke.ipsl.interview.taskmanagement.task.model.Task;
@@ -7,9 +8,12 @@ import net.datafaker.Faker;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ProblemDetail;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
@@ -25,7 +29,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 /**
  * @author Denis Gitonga
  */
-@WebFluxTest(controllers = TaskController.class)
+@WebFluxTest(controllers = TaskController.class,
+        excludeAutoConfiguration = ReactiveSecurityAutoConfiguration.class)
 class TaskControllerTest {
 
     @Autowired
@@ -134,7 +139,6 @@ class TaskControllerTest {
                 .isBadRequest()
                 .expectBody(ProblemDetail.class);
     }
-
 
 
 }
