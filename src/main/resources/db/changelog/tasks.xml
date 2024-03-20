@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- Generate current time -->
+    <property name="now" value="now()" dbms="postgresql"/>
+
+    <!-- Generate v4 uuid-->
+    <property name="uuid_generator" value="uuid_generate_v4()" dbms="postgresql"/>
+
+    <changeSet id="2024-03-18-001" author="Denis.Gitonga">
+        <createTable tableName="tasks" schemaName="tasks">
+            <column name="id" type="uuid" defaultValue="${uuid_generator}">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="title" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="text"/>
+            <column name="due_date" type="datetime"/>
+
+            <column name="created_date" type="datetime" defaultValue="${now}"/>
+            <column name="created_by_id" type="uuid"/>
+            <column name="updated_date" type="datetime"/>
+            <column name="updated_by_id" type="uuid"/>
+            <column name="version" type="int"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
