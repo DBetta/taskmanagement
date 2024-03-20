@@ -1,6 +1,5 @@
 package co.ke.ipsl.interview.taskmanagement.task;
 
-import co.ke.ipsl.interview.taskmanagement.configuration.SecurityConfiguration;
 import co.ke.ipsl.interview.taskmanagement.task.dto.CreateTaskDto;
 import co.ke.ipsl.interview.taskmanagement.task.dto.TaskDto;
 import co.ke.ipsl.interview.taskmanagement.task.model.Task;
@@ -12,8 +11,6 @@ import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurity
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ProblemDetail;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 

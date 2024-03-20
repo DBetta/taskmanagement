@@ -1,7 +1,6 @@
 package co.ke.ipsl.interview.taskmanagement.task;
 
 import co.ke.ipsl.interview.taskmanagement.task.dto.CreateTaskDto;
-import co.ke.ipsl.interview.taskmanagement.task.dto.FilterTaskDto;
 import co.ke.ipsl.interview.taskmanagement.task.dto.TaskDto;
 import co.ke.ipsl.interview.taskmanagement.task.dto.UpdateTaskDto;
 import co.ke.ipsl.interview.taskmanagement.task.model.Task;
@@ -12,9 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -29,8 +25,6 @@ import org.testcontainers.utility.DockerImageName;
 import reactor.test.StepVerifier;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 import static io.r2dbc.spi.ConnectionFactoryOptions.*;
